@@ -2,29 +2,36 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/mmcdole/gofeed"
 	"os"
 	"time"
 )
 
 func describe(id string) {
-	fp := gofeed.NewParser()
-	url := "https://www.heise.de/rss/heise-atom.xml"
-	feed, err := fp.ParseURL(url)
+
+	news, err := newsSingle(id)
 	if err != nil {
-		fmt.Printf("error fetching the feed from url %s: %s\n", url, err)
+		fmt.Printf("error fetching the feed: %s", err)
 		os.Exit(1)
 	}
-	for _, element := range feed.Items {
-		if element.GUID == id {
-			fmt.Print(element.Title)
-			fmt.Print(" ## ")
-			fmt.Print(element.Description)
-			fmt.Print(" ## ")
-			fmt.Println(formatDate(element.Published))
-			return
-		}
+
+	fmt.Print(news.Title)
+	fmt.Print(" ## ")
+	fmt.Print(news.Description)
+	fmt.Print(" ## ")
+	fmt.Print(formatDate(news.Date))
+	fmt.Print(" ## ")
+	fmt.Print(news.ID)
+}
+
+func describeHtmlTable(id string) string {
+	news, err := newsSingle(id)
+	if err != nil {
+		fmt.Printf("error fetching the feed: %s", err)
+		os.Exit(1)
 	}
+
+	item := fmt.Sprintf("<table><tr><th>%s</th><th>%s</th><th>%s</th><th>%s</th></tr></table>", news.Title, news.Description, formatDate(news.Date), news.ID)
+	return item
 }
 
 func formatDate(date string) string {

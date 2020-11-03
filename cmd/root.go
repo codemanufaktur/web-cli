@@ -6,12 +6,6 @@ import (
 	"os"
 )
 
-type News struct {
-	Id     int
-	Title  string
-	Text   string
-	Author string
-}
 
 var rootCmd = &cobra.Command{
 	Use:   "web-cli",
@@ -60,7 +54,7 @@ func Exec() {
 	}
 }
 
-//TODO understand this
-func (n News) Abstract() string {
-	return n.Text[:100]
-}
+////TODO understand this
+//func (n News) Abstract() string {
+//	return n.Text[:100]
+//}

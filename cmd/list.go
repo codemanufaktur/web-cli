@@ -15,7 +15,6 @@ func list() {
 		os.Exit(1)
 	}
 	for i := 0; i < 5; i++ {
-		fmt.Println(feed.Items[i].Title + " " + feed.Items[i].GUID)
+		fmt.Println(feed.Items[i].Title + " " +feed.Items[i].Description + " " + feed.Items[i].GUID)
 	}
 }
-

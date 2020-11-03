@@ -22,11 +22,15 @@ func serve() {
 }
 
 func handleAll(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "<h1>Alle News</h1>")
+	list()
 }
 
 func handleSingle(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "<h1>Nur eine News</h1>")
+
+	vars := mux.Vars(r)
+	id := vars["id"]
+	fmt.Fprintf(w, describeHtmlTable(id))
+
 }
 
 func handleAllApi(w http.ResponseWriter, r *http.Request) {
