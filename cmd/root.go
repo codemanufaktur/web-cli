@@ -6,7 +6,6 @@ import (
 	"os"
 )
 
-
 var rootCmd = &cobra.Command{
 	Use:   "web-cli",
 	Short: "Read Atom feeds",

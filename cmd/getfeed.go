@@ -48,15 +48,15 @@ func newsList(count int) NewsList {
 	return list
 }
 
-func newsSingle(id string) (News, error){
+func newsSingle(id string) (News, error) {
 
 	fp := gofeed.NewParser()
 	feed, _ := fp.ParseURL("https://www.heise.de/rss/heise-atom.xml")
 
 	for _, item := range feed.Items {
-		if item.GUID == "http://heise.de/-" +id {
+		if item.GUID == "http://heise.de/-"+id {
 			id := strings.Replace(item.GUID, "http://heise.de/", "", -1)
-			single :=	News{ item.Published, id, item.Title, item.Description}
+			single := News{item.Published, id, item.Title, item.Description}
 			return single, nil
 		}
 	}
