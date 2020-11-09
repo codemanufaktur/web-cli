@@ -48,7 +48,7 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            user/app:latest
-            user/app:0.0.0
-            ghcr.io/user/app:latest
-            ghcr.io/user/app:0.0.0
+            codemanufaktur/web-cli:latest
+            codemanufaktur/web-cli:1.0.0-beta
+            ghcr.io/codemanufaktur/web-cli:latest
+            ghcr.io/codemanufaktur/web-cli:1.0.0-beta
