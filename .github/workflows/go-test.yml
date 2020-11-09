@@ -22,12 +22,33 @@ jobs:
       - name: Go Test
         run: go test -v ./...
 
-      - name: Upload go binary
+      # TODO replace with container workflow (test, build, deploy, large test, release)
+      - name: Upload go binary artifact
         uses: actions/upload-artifact@v1
         with:
           name: web-cli-binary
           path: web-cli
 
-      - name: Run build/test script
-        run: ./.github/scripts/build.sh
-        shell: bash
+      # copied form https://github.com/docker/build-push-action
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.CR_PAT }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: |
+            user/app:latest
+            user/app:0.0.0
+            ghcr.io/user/app:latest
+            ghcr.io/user/app:0.0.0
