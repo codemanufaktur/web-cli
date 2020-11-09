@@ -1,6 +1,6 @@
 package main
 
-import "git.daimler.com/gschre/web-cli/cmd"
+import "github.com/codemanufaktur/web-cli/cmd"
 
 func main() {
 
