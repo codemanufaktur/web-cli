@@ -50,5 +50,3 @@ jobs:
           tags: |
             ghcr.io/codemanufaktur/web-cli:latest
             ghcr.io/codemanufaktur/web-cli:1.0.0-beta
-            codemanufaktur/web-cli:latest
-            codemanufaktur/web-cli:1.0.0-beta
