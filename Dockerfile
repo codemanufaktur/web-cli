@@ -1,3 +1,4 @@
-FROM alpine:3.10
-COPY web-cli /web-cli
-ENTRYPOINT ["./web-cli serve"]
+FROM gcr.io/distroless/static:latest
+COPY web-cli .
+EXPOSE 8080/tcp
+ENTRYPOINT ["/web-cli", "serve"]
