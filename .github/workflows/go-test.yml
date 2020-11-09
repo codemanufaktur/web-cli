@@ -3,8 +3,8 @@ name: Go Test
 on: push
 
 jobs:
-  build-and-test:
-    name: Go Build and Test
+  build-test-publish:
+    name: Go Build, Test and publish container
     runs-on: ubuntu-latest
     steps:
       - name: Set up Go 1.14.10
@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Go Build
-        run: go build -v .
+        run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build -v .
 
       - name: Go Test
         run: go test -v ./...
@@ -47,6 +47,7 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64
           push: true
+          # be sure to use proper tags! format is ghcr.io/$github.actor/$github.repository:$version
           tags: |
             ghcr.io/codemanufaktur/web-cli:latest
             ghcr.io/codemanufaktur/web-cli:1.0.0-beta
