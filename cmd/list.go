@@ -2,8 +2,9 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/mmcdole/gofeed"
 	"os"
+
+	"github.com/mmcdole/gofeed"
 )
 
 func list() {

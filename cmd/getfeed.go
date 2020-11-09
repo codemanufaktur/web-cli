@@ -9,6 +9,8 @@ import (
 	"github.com/mmcdole/gofeed"
 )
 
+const baseUrl string = "http://heise.de/-"
+
 type News struct {
 	Date        string `json:"date,omitempty"`
 	ID          string `json:"id"`
@@ -17,18 +19,18 @@ type News struct {
 }
 
 type NewsList struct {
-	News    []News `json:"news,omitempty"`
-	BaseUrl string `json:"baseUrl,omitempty"`
+	News []News `json:"news,omitempty"`
+	Url  string `json:"baseUrl,omitempty"`
 }
 
 func newsList(count int) NewsList {
 
+	url := "https://www.heise.de/rss/heise-atom.xml"
 	list := NewsList{
-		BaseUrl: "http://www.heise.de",
+		Url: url,
 	}
 
 	fp := gofeed.NewParser()
-	url := "https://www.heise.de/rss/heise-atom.xml"
 	feed, err := fp.ParseURL(url)
 	if err != nil {
 		fmt.Printf("error fetching the feed from url %s: %s\n", url, err)
@@ -36,7 +38,7 @@ func newsList(count int) NewsList {
 	}
 	for i := 0; i < count; i++ {
 		item := feed.Items[i]
-		id := strings.Replace(item.GUID, list.BaseUrl, "", -1)
+		id := strings.Replace(item.GUID, baseUrl, "", -1)
 		news := News{
 			Date:        formatDate(item.Published),
 			ID:          id,
@@ -55,7 +57,7 @@ func newsSingle(id string) (News, error) {
 
 	for _, item := range feed.Items {
 		if item.GUID == "http://heise.de/-"+id {
-			id := strings.Replace(item.GUID, "http://heise.de/", "", -1)
+			id := strings.Replace(item.GUID, baseUrl, "", -1)
 			single := News{item.Published, id, item.Title, item.Description}
 			return single, nil
 		}
