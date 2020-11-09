@@ -1,6 +1,6 @@
 name: Go Release
-
-on: push
+# TODO
+on: gollum
 
 jobs:
   build-and-test:
