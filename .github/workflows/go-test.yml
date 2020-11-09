@@ -21,3 +21,13 @@ jobs:
 
       - name: Go Test
         run: go test -v ./...
+
+      - name: Upload go binary
+        uses: actions/upload-artifact@v1
+        with:
+          name: web-cli-binary
+          path: web-cli
+
+      - name: Run build/test script
+        run: ./.github/scripts/build.sh
+        shell: bash
