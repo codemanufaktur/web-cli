@@ -50,6 +50,34 @@ func newsList(count int) NewsList {
 	return list
 }
 
+
+func GetNewsList(count int) NewsList {
+
+	url := "https://www.heise.de/rss/heise-atom.xml"
+	list := NewsList{
+		Url: url,
+	}
+
+	fp := gofeed.NewParser()
+	feed, err := fp.ParseURL(url)
+	if err != nil {
+		fmt.Printf("error fetching the feed from url %s: %s\n", url, err)
+		os.Exit(1)
+	}
+	for i := 0; i < count; i++ {
+		item := feed.Items[i]
+		id := strings.Replace(item.GUID, baseUrl, "", -1)
+		news := News{
+			Date:        item.Published,
+			ID:          id,
+			Title:       item.Title,
+			Description: item.Description,
+		}
+		list.News = append(list.News, news)
+	}
+	return list
+}
+
 func newsSingle(id string) (News, error) {
 
 	fp := gofeed.NewParser()

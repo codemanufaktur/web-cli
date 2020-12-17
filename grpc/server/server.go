@@ -5,10 +5,13 @@ import (
 	"flag"
 	"fmt"
 	webcli "github.com/codemanufaktur/web-cli/api/generated/proto"
+	"github.com/codemanufaktur/web-cli/cmd"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"log"
 	"net"
+	"time"
 )
 
 type webCliServer struct {
@@ -21,7 +24,37 @@ var (
 )
 
 func (w webCliServer) ListFeeds(ctx context.Context, empty *emptypb.Empty) (*webcli.ListFeedsResponse, error) {
-	panic("implement me")
+
+	news := cmd.GetNewsList(5)
+
+	var realNews []*webcli.News
+
+	for i := 0; i < len(news.News); i++ {
+
+		news, err := mapNews(news.News[i])
+		if err != nil {
+			return nil, err
+		}
+
+		realNews = append(realNews, news)
+	}
+	return &webcli.ListFeedsResponse{News: realNews}, nil
+}
+
+func mapNews(news cmd.News) (response *webcli.News, err error) {
+
+	ref := "2006-01-02T15:04:05-07:00"
+	t, err := time.Parse(ref, news.Date)
+	if err != nil {
+		return nil, err
+	}
+
+	return &webcli.News{
+		ID:          news.ID,
+		Title:       news.Title,
+		Description: news.Description,
+		Date:        &timestamppb.Timestamp{Seconds: t.Unix()},
+	}, nil
 }
 
 func main() {
