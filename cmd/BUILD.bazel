@@ -1,0 +1,25 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "cmd",
+    srcs = [
+        "describe.go",
+        "getfeed.go",
+        "list.go",
+        "root.go",
+        "serve.go",
+    ],
+    importpath = "github.com/codemanufaktur/web-cli/cmd",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_gorilla_mux//:go_default_library",
+        "@com_github_mmcdole_gofeed//:go_default_library",
+        "@com_github_spf13_cobra//:go_default_library",
+    ],
+)
+
+go_test(
+    name = "cmd_test",
+    srcs = ["describe_test.go"],
+    embed = [":cmd"],
+)
